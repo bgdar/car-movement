@@ -1,0 +1,226 @@
+:root {
+  --grass-green: #2ecc71;
+  --road-gray: #2c3e50;
+  --accent-gold: #f1c40f;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+}
+
+div.car-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 90vh;
+}
+
+div#popup {
+  /* ini popup akan di gunaka di semua popup */
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
+div#popup .info {
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 10px;
+
+  /* Klik tembus ke canvas*/
+  pointer-events: none;
+}
+
+.popupCrash {
+  display: none;
+}
+
+.bg-kabut {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  /* Pastikan di atas canvas */
+  pointer-events: none;
+  /* Agar tidak menghalangi klik pada game */
+
+  /* Membuat tekstur kabut menggunakan radial-gradient */
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.4),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 255, 255, 0.3),
+      transparent 60%
+    );
+  background-size: 200% 200%;
+
+  /* Efek blur pada latar belakang */
+  backdrop-filter: blur(2px);
+
+  /* Jalankan animasi */
+  animation: gerakKabut 15s linear infinite;
+}
+
+@keyframes gerakKabut {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0.5;
+  }
+
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+    /* Kabut menebal di tengah */
+  }
+
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.5;
+  }
+}
+
+/* tidak di gunakan dulu karena sudah ada canvas , end */
+/* Canvas Element Start  */
+canvas#car {
+  display: block;
+  z-index: 1;
+
+  border: 5px solid rebeccapurple;
+
+  width: 90%;
+  /* 100% Viewport Width */
+  height: 100%;
+  /* 100% Viewport Height */
+
+  /* untuk terlihat perprektif  ke depan gitu 2d top down*/
+  /* handle topDoen nya di css aja */
+  transform: perspective(600px) rotateX(45deg) skewX(-22deg);
+  transform-origin: bottom;
+}
+
+/* Canvas Element End   */
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  /* Tumpuk rumput di atas menu */
+  justify-content: flex-end;
+  background: transparent;
+  z-index: 100;
+}
+
+/* --- Efek Rumput di Atas Footer --- */
+.glasses {
+  width: 100%;
+  height: 20px;
+  background-color: var(--grass-green);
+  /* Membuat pola bergerigi seperti rumput */
+  clip-path: polygon(
+    0% 100%,
+    100% 100%,
+    100% 40%,
+    95% 70%,
+    90% 30%,
+    85% 60%,
+    80% 20%,
+    75% 70%,
+    70% 30%,
+    65% 60%,
+    60% 10%,
+    55% 50%,
+    50% 20%,
+    45% 70%,
+    40% 30%,
+    35% 60%,
+    30% 10%,
+    25% 50%,
+    20% 20%,
+    15% 70%,
+    10% 30%,
+    5% 60%,
+    0% 20%
+  );
+  margin-bottom: -1px;
+  /* Menghilangkan celah putih */
+}
+
+/* --- Container Menu (Dashboard Look) --- */
+.foo-cnt {
+  width: 100%;
+  height: 100%;
+  background: var(--road-gray);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 4px solid var(--accent-gold);
+  /* Seperti marka jalan */
+  box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.at,
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.at p,
+.score p {
+  margin: 5px 0 0 0;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Styling Range Input (Custom Slider) --- */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 200px;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  background: #444;
+  border-radius: 10px;
+  border: 1px solid #555;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -7px;
+  box-shadow: 0 0 10px var(--accent-gold);
+}
+
+/* --- Info Score --- */
+.info::before {
+  content: "SCORE: ";
+  color: var(--accent-gold);
+}
+
+.info {
+  font-size: 1.5rem;
+  font-family: "Courier New", Courier, monospace;
+  color: #fff;
+  text-shadow: 0 0 5px #fff;
+}

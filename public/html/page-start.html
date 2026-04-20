@@ -1,0 +1,41 @@
+<div id="popup">
+  <div class="info">
+    <p>1</p>
+  </div>
+</div>
+
+<!-- kabut putih atau apapun untuk  -->
+<!-- <div class="bg-kabut"></div> -->
+
+<!-- 100% ukuran canvas utama da di tengah -->
+<!-- di sini untuk handle utamanya  -->
+<div class="car-container">
+  <!-- popup canvas  -->
+  <div class="popup popupCrash">
+    <p>boom</p>
+  </div>
+
+  <canvas id="car"></canvas>
+</div>
+<footer>
+  <!-- rumputan hijau di bawah jalan raya -->
+  <div class="glasses"></div>
+
+  <!-- menu untuk mengatur tata letak mobil nya di koordinat Y -->
+  <div class="foo-cnt">
+    <div class="at">
+      <input type="range" id="y-slider" min="0" max="1000" value="50" />
+      <p>Y-Coordinate Offset</p>
+    </div>
+
+    <div class="score">
+      <p class="info"></p>
+    </div>
+
+    <div>
+      tangkap aja nantik untuk di gunakan di mobilenya saat bergerak
+      <audio id="audioSaya" src="musik.mp3" preload="auto"></audio>
+      <canvas id="canvasSaya" width="400" height="200"></canvas>
+    </div>
+  </div>
+</footer>

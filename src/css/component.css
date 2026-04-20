@@ -1,0 +1,195 @@
+/* tidak di gunakan dulu karena sudah ada canvas , start */
+#car {
+  perspective: 1000px;
+  width: 35%;
+  height: 35%;
+}
+
+#car .collection {
+  position: relative;
+  width: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 200px;
+  transform-style: preserve-3d;
+  /* awalan semuanya mrenga ke bawah dan ke kanan sedikit , semua element nya */
+  /* skew untuk mereng ke kiri atau kana  */
+  transform: rotateX(40deg) rotateY(-10deg) skewX(-25deg);
+}
+
+/* #car .collection:hover { */
+/*   transform: rotateX(20deg) rotateY(330deg); */
+/*   transition: 1s; */
+/* } */
+
+/* BASE STYLE */
+#car .collection div {
+  /* position: absolute; */
+  border: 1.5px solid black;
+  background: rgba(0, 150, 255, 0.6);
+}
+
+.satu {
+  width: 120px;
+  height: 40px;
+  top: 10px;
+  left: 80px;
+  /* transform: rotateX(20deg) rotateY(15deg); */
+}
+
+/* 2 - KACA DEPAN */
+.dua {
+  top: 20px;
+  left: 140px;
+  /* transform: rotateY(20deg); */
+  background: rgba(200, 255, 255, 0.6);
+}
+
+.tiga {
+  top: 20px;
+  left: 40px;
+  transform: rotateY(50deg);
+  background: rgba(200, 255, 255, 0.6);
+}
+
+.empat {
+  top: 40px;
+  left: 60px;
+}
+
+.lima {
+  top: 80px;
+  /* transform: rotateY(20deg); */
+  left: 50px;
+}
+
+.enam {
+  width: 60px;
+  height: 60px;
+  top: 80px;
+  left: 190px;
+
+  transform: rotateY(50deg);
+}
+
+/* 7 - BAWAH */
+.tujuh {
+  top: 140px;
+  left: 50px;
+  background: rgba(50, 50, 50, 0.8);
+}
+
+.delapan {
+  width: 60px;
+  height: 80px;
+  top: 60px;
+  left: 50px;
+  /* transform: rotateY(-90deg); */
+}
+
+.sembilan {
+  width: 60px;
+  height: 80px;
+  top: 60px;
+  left: 190px;
+  transform: rotateY(90deg);
+}
+
+.sepuluh {
+  width: 80px;
+  height: 60px;
+  top: 80px;
+  left: 20px;
+  /* transform: rotateY(-30deg); */
+}
+
+.sebelas {
+  width: 40px;
+  height: 40px;
+  top: 140px;
+  left: 80px;
+  background: black;
+}
+
+.duabelas {
+  width: 40px;
+  height: 40px;
+  top: 140px;
+  left: 170px;
+  background: black;
+}
+
+.tigabelas {}
+
+.empatbelas {}
+
+.limabelas {}
+
+.enambelas {}
+
+/* Latar belakang gelap (Overlay) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Gelap dengan transparansi */
+  display: flex;
+  justify-content: center;
+  /* Tengah horizontal */
+  align-items: center;
+  /* Tengah vertikal */
+  z-index: 9999;
+  /* Pastikan di atas elemen lain */
+}
+
+/* Kotak Popup */
+.popup-box {
+  background-color: white;
+  padding: 20px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+  /* Animasi muncul */
+}
+
+.popup-content p {
+  font-family: sans-serif;
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* Tombol Tutup */
+.close-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background-color: #ff6b81;
+}
+
+/* Animasi sederhana */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
