@@ -18,9 +18,9 @@ export class ContentainerCanvas {
     baseY: number,
     heigthCanvas = 2000,
   ) {
-    this.acceleration = 0.15; // Percepatan atau akselerasi adalah perubahan kecepatan dalam satuan waktu tertentu.
-    this.friction = 0.04; // gaya kontak yang melawan pergerakan atau menahan pergeseran antara dua permukaan yang bersentuhan, baik diam maupun bergerak.
-    this.maxSpeed = 6;
+    this.acceleration = 0.2; // Percepatan atau akselerasi adalah perubahan kecepatan dalam satuan waktu tertentu.
+    this.friction = 0.06; //Gesekan
+    this.maxSpeed = 5;
     this.speed = 0; // awal 0 kecepatan
     this.x = baseX;
     this.y = baseY;
@@ -71,6 +71,8 @@ export class ContentainerCanvas {
     // }
   }
 
+  reset() {}
+
   /**
    * handle ketikan di click atas bawah
    * agar yang bergerak Object nya , bukan mobile
@@ -78,7 +80,11 @@ export class ContentainerCanvas {
   contentMove(keys: Record<string, boolean>) {
     // 1. Handle Maju & Mundur (Akselerasi)
     if (keys["ArrowUp"]) {
-      this.speed += this.acceleration;
+      // this.speed += this.acceleration;
+      // if (this.speed > this.maxSpeed) {
+      //      this.speed = this.maxSpeed;
+      //   }
+      this.speed += (this.maxSpeed - this.speed) * 0.05;
       // } else if (keys["ArrowDown"]) {
       //   this.speed -= this.acceleration;
     }

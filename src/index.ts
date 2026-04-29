@@ -1,9 +1,17 @@
 import "./css/index.css";
 import "./css/page-dashboard.css";
-import { CarCanvas, DrawRoude } from "./ts/componentCore";
-import { ObjectPohonTumbang, DrawTree, carObject } from "./ts/componentObject";
-import { ContentainerCanvas } from "./ts/containerObject";
-import { getRndInteger } from "./ts/core";
+import "./css/page-start.css";
+
+import { CarCanvas } from "./ts/coreComponent/car";
+import { DrawTree } from "./ts/objects/tree";
+// import { ContentainerCanvas } from "./ts/containerObject";
+import {
+  ArrowUp,
+  checkCollision,
+  getRndInteger,
+  updateAudioRate,
+} from "./ts/core";
+import { DrawCoin } from "./ts/objects/coin";
 // import typescriptLogo from "./assets/typescript.svg";
 // import viteLogo from "./assets/vite.svg";
 // import heroImg from "./assets/hero.png";
@@ -12,6 +20,8 @@ import { getRndInteger } from "./ts/core";
 const pageDashboardT = "/html/page-dashboard.html";
 const pageStartT = "/html/page-start.html";
 import { navigateTo } from "./ts/core";
+import { DrawRoudeAsphalt } from "./components/roude";
+import type { DrawObject, DrawObjectClass } from "./types";
 
 const keys: Record<string, boolean> = {};
 
@@ -22,51 +32,51 @@ window.onkeyup = (e: KeyboardEvent): void => {
   keys[e.key] = false;
 };
 
-// untuk posisi X
-//  selecksi map nya per baris array , kalau udah lewat
-// 0 = tidak ada object
-const mapRandomX: number[][] = [
-  [1200, 450, 0, 150, 800],
-  [0, 300, 600, 0, 900],
-  [500, 520, 0, 480, 510],
-  [45, 1000, 0, 250, 60],
-  [150, 0, 700, 900, 0],
-  [800, 200, 400, 0, 1100],
-  [0, 0, 500, 1000, 1200],
-  [300, 600, 0, 600, 300],
-];
-
-const mapRandomY: number[][] = [
-  [500, 150, 0, 300, 50],
-  [0, 400, 800, 0, 200],
-  [100, 110, 120, 0, 500],
-  [600, 0, 350, 100, 800],
-  [25, 200, 0, 450, 60],
-  [300, 300, 300, 0, 600],
-  [900, 700, 0, 200, 400],
-  [150, 0, 450, 800, 100],
-];
-
+// simpan posisi koordinat di mana object di gambar di map
+// let maps = [{ name: "pohon", x: 300, y : 200 }, { name: "" }, {}];
 // var global
-
-const mobileVP = 700;
-let VPHNow = 0; //viewport H
-let randMap = 0;
-// let randPosY = 0; // random posisi untuk menyeleksi data di map
-// let randPosX = 0; // random posisi untuk menyeleksi data di map
-
+let VPHNow = 0;
 let roadOffset = 0;
-let batasKiri = 0;
+
+let yKoordinat: number = 0;
+
+let isMovingThisFrame = false;
+// ket , x
+
+interface typeDeclarasi {
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  class: DrawObjectClass;
+}
+
+// simpan daftar object yang sipa di panggil
+let declarasiObject: typeDeclarasi[] = [
+  {
+    name: "pohon 1",
+    x: 200,
+    y: -10,
+    width: 50,
+    height: 50,
+    class: DrawTree,
+  },
+
+  { name: "coin 1 ", x: 0, y: -10, width: 100, height: 150, class: DrawCoin },
+];
+// simpan object yang suhdah di inisialisais dan sipa di panggil
+let instanceObjects: DrawObject[] = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   const app = document.querySelector<HTMLDivElement>("#app") as HTMLDivElement;
 
   // halaman dashboard sementara di matiin untuk mode dev
   // muat halaman awal
-  await navigateTo(pageDashboardT, app);
+  // await navigateTo(pageDashboardT, app);
   //
   const btn = app.querySelector("button#start") as HTMLButtonElement;
-  //
+
   btn.addEventListener("click", async () => {
     console.info("execustu");
 
@@ -74,6 +84,69 @@ document.addEventListener("DOMContentLoaded", async () => {
     await navigateTo(pageStartT, app);
     const carCanvas = document.querySelector("canvas#car") as HTMLCanvasElement;
     const carContex = carCanvas.getContext("2d");
+
+    // CONTROLLER START
+    const ctl = document.querySelector("div.ctl");
+    const btnActive = ctl?.querySelector("button.ctl-active");
+    const controller = document.querySelector(
+      "div.controller",
+    ) as HTMLDivElement;
+
+    btnActive?.addEventListener("click", () => {
+      controller?.classList.toggle("active");
+
+      controller.querySelectorAll(".btn").forEach((btn) => {
+        const key = btn.dataset.key;
+
+        // update key untuk langsung menjalnakan
+        const down = () => (keys[key] = true);
+        const up = () => (keys[key] = false);
+
+        btn.addEventListener("mousedown", down);
+        btn.addEventListener("mouseup", up);
+        btn.addEventListener("mouseleave", up);
+
+        btn.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          down();
+        });
+
+        btn.addEventListener("touchend", up);
+      });
+    });
+    // CONTROLLER END
+
+    // PERPESTIVE  START
+    const perpektive = document.querySelector(
+      "div.perpektive",
+    ) as HTMLDivElement;
+    const btnPerpektive = perpektive.querySelector(
+      "button",
+    ) as HTMLButtonElement;
+
+    btnPerpektive.addEventListener("click", () => {
+      carCanvas.classList.toggle("perpektive");
+    });
+
+    // PERPESTIVE  END
+
+    // Y KORDINAT START
+    const yContainer = document.querySelector(
+      "div.y-container",
+    ) as HTMLDivElement;
+    const yInputKoordinat = yContainer.querySelector(
+      'input[type="range"]',
+    ) as HTMLInputElement;
+
+    yInputKoordinat?.addEventListener("input", () => {
+      yKoordinat = Number(yInputKoordinat.value);
+
+      console.info("y kordinat :", yKoordinat);
+    });
+    // Y KORDINAT END
+    // UADIO ||  jangan dulu
+    // const carAudio = new Audio("/car-move.mp3");
+    // carAudio.loop = true;
 
     if (carContex) {
       function resizeCanvas() {
@@ -90,76 +163,107 @@ document.addEventListener("DOMContentLoaded", async () => {
         carContex,
         100,
         100,
-        0,
-        100,
+        carCanvas.width / 2,
+        carCanvas.height - 150,
         carCanvas.width,
         carCanvas.height,
       );
-      const ctnObject = new ContentainerCanvas(
-        carContex,
-        50,
-        50,
-        carCanvas.height,
-      );
+      // const ctnObject = new ContentainerCanvas(
+      //   carContex,
+      //   50,
+      //   50,
+      //   carCanvas.height,
+      // );
+      //
+      // const pohon1 = new DrawTree(carContex,  -10, 200, 350, carCanvas.height);
+      // const coin1 = new Coin(carContex,500,-10,50,50,10,carCanvas.height)
+      // const pohon2 = new DrawTree(carContex, 58, 50, carCanvas.height);
+      declarasiObject.forEach((item) => {
+        const newObject = new item.class(
+          carContex,
+          item.name,
+          item.x,
+          item.y,
+          item.width,
+          item.height,
+          carCanvas.height,
+        );
+        instanceObjects.push(newObject);
+      });
 
       const animate = (): void => {
         carContex.clearRect(0, 0, carCanvas.width, carCanvas.height);
 
-        console.info("rant map saat ini : ", randMap);
-        // AMBIL DATA TERBARU berdasarkan randMap saat ini / render
-        const currentX = mapRandomX[randMap];
-        const currentY = mapRandomY[randMap];
-        const minValueY = Math.min(...currentY); // nilai paling kecil atau paling akhir mendekati batas bwh
+        // ambil salah 1 dari pohon1 misalnya untuk y
+        DrawRoudeAsphalt(
+          carContex,
+          carCanvas.width,
+          carCanvas.height,
+          instanceObjects[0].y,
+        );
 
-        //Gambar Lingkungan (Pastikan fungsi ini menerima parameter ctx)
-        DrawRoude(carContex, carCanvas.width, carCanvas.height, roadOffset);
+        instanceObjects.forEach((obj) => {
+          //  handle pergerakan KeyBanding
+          car.carMove(keys);
+          ArrowUp(keys, () => {
+            obj.move();
 
-        // START OBject Draw component
-        ctnObject.draw((ctx) => {
-          ObjectPohonTumbang(
-            ctx,
-            "ffcc00ff",
-            80,
-            ctnObject.getHeigth(),
-            ctnObject.x + currentX[0],
-            ctnObject.y - currentY[0],
-          );
+            // Tandai bahwa mobil sedang bergerak di frame ini
+            isMovingThisFrame = true;
+          });
+
+          isMovingThisFrame = false;
+          // // Jika di frame ini TIDAK ada input ArrowUp, maka matikan suara
+          // if (!isMovingThisFrame) {
+          //     if (!carAudio.paused) {
+          //         carAudio.pause();
+          //         carAudio.currentTime = 0;
+          //     }
+          // }
+
+          // poblem : gak bisa andalakan kecepatan Y dari obj aja , harus bersamaan dengan x dari car dan
+          // poble : obj akan mereset ulang nantik jadi audio ikutan kereset , karena mengguakan kecepatan
+          // saran : menggunakan fake object yang membuat speed terus bergerak sampai mobile berhenti maka audio ikutan berhenti
+          // updateAudioRate(isMovingThisFrame, carAudio, obj.speed, obj.maxSpeed);
+          //
+          // Update dan Gambar
+          // pohon1.update();
+          // coin1.update()
+          obj.update();
+          car.update();
+
+          car.draw();
+          // pohon1.draw();
+          // coin1.draw();
+          obj.draw();
+
+          // cek collection
+          // cek pohon1
+          if (
+            checkCollision(
+              car.x,
+              car.y,
+              car.width,
+              car.height,
+              obj.x,
+              obj.y,
+              obj.width,
+              obj.height,
+            )
+          ) {
+            console.info("mobile : x dan y : ", car.x, car.y);
+            // console.info("pohon: x dan y : ", pohon1.x, pohon1.y);
+            console.info(obj.name, " tertabrak");
+          }
+          //
+
+          // PROPERTY UPDATE START
+          if (yKoordinat <= carCanvas.height) {
+            car.y = yKoordinat;
+          }
+          // PROPERTY UPDATE END
         });
-        ctnObject.draw((ctx) => {
-          DrawTree(ctx, ctnObject.x + currentX[1], ctnObject.y - currentY[1]);
-        });
-        ctnObject.draw((ctx) => {
-          DrawTree(ctx, ctnObject.x + currentX[2], ctnObject.y - currentY[2]);
-        });
-        // END OBject Draw component
-
-        //  handle pergerakan KeyBanding
-        car.carMove(keys);
-        ctnObject.contentMove(keys);
-
-        // Update dan Gambar
-        ctnObject.update();
-        car.update();
-        car.draw();
-
-        // update property global
-        roadOffset = ctnObject.speed * 2;
-        // Hitung posisi koordinat Y riil objek tersebut di Canvas
-        const lastObjectY = ctnObject.y - minValueY;
-        // jika object melewati Y axis dan adalah object yang paling atas
-        if (lastObjectY > carCanvas.height) {
-          // 200  agar jauh dari pandangn
-          // 20 : sbg penanda untuk ini di  exc
-          console.info("object keluar di y : ", ctnObject.y);
-          // ctnObject.y = -10;
-
-          // ganti posisi data map
-          randMap = getRndInteger(0, mapRandomX.length - 1); // pastikan berdasarkan panjang
-          // randPosX = getRndInteger(0, 5);
-          // randPosY = getRndInteger(0, 5);
-        }
-
-        //Loop Animasi Panggil fungsinya sendiri tanpa tanda kurung
+        // semua object yang keluar dari canvas
         requestAnimationFrame(animate);
       };
 

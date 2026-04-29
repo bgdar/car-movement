@@ -40,3 +40,75 @@ export function getRndInteger(min: number, max: number): number {
 console.log(getRndInteger(50, 100));
 // funcsi utnuk mengebalikan key yang di click
 // export function getKey(window)
+
+export function ArrowUp(keys: Record<string, boolean>, callback: () => void) {
+  if (keys["ArrowUp"]) {
+    callback();
+  }
+}
+/**
+ * Mengecek tabrakan 2 object kotak
+ *
+ * x,y = posisi kiri atas object
+ * width,height = ukuran object
+ */
+export function checkCollision(
+  object1X: number,
+  object1Y: number,
+  object1Width: number,
+  object1Height: number,
+
+  object2X: number,
+  object2Y: number,
+  object2Width: number,
+  object2Height: number,
+): boolean {
+  return (
+    object1X < object2X + object2Width &&
+    object1X + object1Width > object2X &&
+    object1Y < object2Y + object2Height &&
+    object1Y + object1Height > object2Y
+  );
+}
+
+/**
+ * Fungsi untuk mengontrol audio berdasarkan kecepatan
+ * @param isMoving - Status apakah tombol input sedang aktif
+ * @param audio - Objek HTMLAudioElement yang akan diputar
+ * @param currentSpeed - Kecepatan objek saat ini
+ * @param maxSpeed - Batas kecepatan maksimal objek
+ */
+export function updateAudioRate(
+  isMoving: boolean,
+  audio: HTMLAudioElement,
+  currentSpeed: number,
+  maxSpeed: number,
+) {
+  // Hitung rasio kecepatan (0 sampai 1). Gunakan Math.abs jika speed bisa bernilai negatif (mundur)
+  const speedRatio = Math.min(Math.abs(currentSpeed) / maxSpeed, 1);
+
+  if (isMoving || speedRatio > 0.01) {
+    // Jalankan audio jika belum putar
+    if (audio.paused) {
+      audio.play().catch(() => {
+        // Abaikan error autoplay jika user belum interaksi
+      });
+    }
+
+    // 1. Atur Volume (Min 0.1, Max 1.0)
+    // Menggunakan Math.min untuk memastikan tidak lebih dari 1.0 yang bisa bikin error
+    audio.volume = Math.min(Math.max(0.1, speedRatio), 1.0);
+
+    // 2. Atur Pitch/PlaybackRate
+    // Mesin akan terdengar lebih melengking seiring bertambahnya speed
+    audio.playbackRate = 1 + speedRatio;
+  } else {
+    // FADE OUT: Mengecilkan suara perlahan saat berhenti agar tidak terdengar patah
+    if (audio.volume > 0.05) {
+      audio.volume -= 0.05;
+    } else {
+      audio.pause();
+      audio.currentTime = 0; // Opsional: reset ke awal suara
+    }
+  }
+}

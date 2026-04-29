@@ -98,29 +98,80 @@ canvas#car {
   height: 100%;
   /* 100% Viewport Height */
 
-  /* untuk terlihat perprektif  ke depan gitu 2d top down*/
+ }
+canvas#car.perpektive {
+ /* update di JS  */
+  /* untuk terlihat perprektif  ke depan gitu 2d top down */
   /* handle topDoen nya di css aja */
   transform: perspective(600px) rotateX(45deg) skewX(-22deg);
   transform-origin: bottom;
+
 }
 
-/* Canvas Element End   */
+.controller {
 
+  position: fixed;
+
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  z-index: 999;
+  user-select: none;
+}
+
+.controller.active {
+
+  display: none; /* default tidak terlihat */
+}
+
+.controller .left-pad {
+  display: flex;
+  gap: 12px;
+}
+.controller .right-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.controller .btn {
+  width: 15vw;
+  height: 15vh;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+
+  transition: 0.1s ease;
+}
+.controller .btn:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+/* Canvas Element End   */
 footer {
   position: fixed;
   bottom: 0;
-  width: 100vw;
-  height: 10vh;
-  display: flex;
-  flex-direction: column;
-  /* Tumpuk rumput di atas menu */
-  justify-content: flex-end;
-  background: transparent;
+  left: 0;
+  width: 100%;
   z-index: 100;
+  pointer-events: none; /* Agar tidak menghalangi klik di area kosong */
 }
 
 /* --- Efek Rumput di Atas Footer --- */
-.glasses {
+footer .glasses {
   width: 100%;
   height: 20px;
   background-color: var(--grass-green);
@@ -154,73 +205,94 @@ footer {
   /* Menghilangkan celah putih */
 }
 
-/* --- Container Menu (Dashboard Look) --- */
+
+/* Container utama dashboard */
 .foo-cnt {
-  width: 100%;
-  height: 100%;
+  pointer-events: auto; /* Aktifkan kembali klik di dalam menu */
   background: var(--road-gray);
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
-  padding: 10px 20px;
-  border-top: 4px solid var(--accent-gold);
-  /* Seperti marka jalan */
-  box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.3);
+  padding: 15px 10px;
+  border-top: 3px solid var(--accent-gold);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  min-height: 80px;
 }
 
-.at,
-.score {
+/* Grup item di dalam dashboard */
+.y-container, .score, .ctl, .perpektive {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   color: white;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  gap: 5px;
 }
 
-.at p,
-.score p {
-  margin: 5px 0 0 0;
-  font-size: 0.8rem;
-  font-weight: bold;
+.foo-cnt p {
+  margin: 0;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  opacity: 0.8;
 }
 
-/* --- Styling Range Input (Custom Slider) --- */
+/* Button Styling (Glassmorphism) */
+.foo-cnt button {
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.foo-cnt button:active {
+  transform: scale(0.95);
+  background: var(--accent-gold);
+  color: black;
+}
+
+/* Custom Slider */
 input[type="range"] {
   -webkit-appearance: none;
-  width: 200px;
+  width: 120px;
   background: transparent;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 8px;
-  background: #444;
-  border-radius: 10px;
-  border: 1px solid #555;
+  height: 6px;
+  background: #1a252f;
+  border-radius: 3px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   background: var(--accent-gold);
   border-radius: 50%;
+  margin-top: -6px;
+  box-shadow: 0 0 8px var(--accent-gold);
   cursor: pointer;
-  margin-top: -7px;
-  box-shadow: 0 0 10px var(--accent-gold);
 }
 
-/* --- Info Score --- */
-.info::before {
-  content: "SCORE: ";
-  color: var(--accent-gold);
-}
-
+/* Score Style */
 .info {
-  font-size: 1.5rem;
-  font-family: "Courier New", Courier, monospace;
-  color: #fff;
-  text-shadow: 0 0 5px #fff;
+  font-size: 1.2rem !important;
+  font-family: 'Courier New', monospace;
+  color: var(--accent-gold) !important;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+  opacity: 1 !important;
+}
+
+/* Sembunyikan elemen teknis/hidden */
+#canvasSaya {
+  display: none; /* Jika hanya untuk menangkap data frame */
 }

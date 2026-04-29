@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About - Game Dashboard</title>
+    <!-- Menghubungkan ke file CSS yang sudah ada -->
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a252f;
+            --accent-gold: #f1c40f;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            color: var(--accent-gold);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Info Kreator */
+        .creator-info p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-gold);
+            color: black;
+        }
+
+        /* Keyboard Info Table */
+        .key-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .key-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .key-cap {
+            background: #444;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            border-bottom: 3px solid #222;
+            color: var(--accent-gold);
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        .back-btn:hover {
+            opacity: 1;
+            color: var(--accent-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="about-container">
+        <h1>About Game</h1>
+
+        <!-- Informasi Kreator -->
+        <div class="section creator-info">
+            <h3>Kreator</h3>
+            <p>Halo! Saya adalah pengembang di balik proyek ini. Game ini dikembangkan menggunakan Web Tech (HTML5, Canvas, & JS) untuk memberikan pengalaman interaktif yang ringan dan responsif.</p>
+            
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">GitHub</a>
+                <a href="#">Portfolio</a>
+            </div>
+        </div>
+
+        <!-- Kontrol Game -->
+        <div class="section">
+            <h3>Kontrol (Keyboard)</h3>
+            <table class="key-table">
+                <tr>
+                    <td><span class="key-cap">▲</span> / <span class="key-cap">W</span></td>
+                    <td>Bergerak Maju / Lompat</td>
+                </tr>
+                <tr>
+                    <td><span class="key-cap">▼</span> / <span class="key-cap">S</span></td>
+                    <td>Bergerak Mundur / Menunduk</td>
+                </tr>
+                <tr>
+                    <td><span class="key-cap">◀</span> / <span class="key-cap">A</span></td>
+                    <td>Bergerak ke Kiri</td>
+                </tr>
+                <tr>
+                    <td><span class="key-cap">▶</span> / <span class="key-cap">D</span></td>
+                    <td>Bergerak ke Kanan</td>
+                </tr>
+                <tr>
+                    <td><span class="key-cap">P</span></td>
+                    <td>Ganti Perspektif Kamera</td>
+                </tr>
+                <tr>
+                    <td><span class="key-cap">Space</span></td>
+                    <td>Aksi Utama</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Informasi Versi -->
+        <div class="section">
+            <h3>Informasi Tambahan</h3>
+            <p style="font-size: 0.9rem; opacity: 0.7;">
+                Versi: 1.0.4<br>
+                Update Terakhir: April 2026<br>
+                Fitur: Mobile Controller Support, Canvas Rendering, Audio Optimization.
+            </p>
+        </div>
+
+        <a href="index.html" class="back-btn">← Menu</a>
+    </div>
+
+</body>
+</html>

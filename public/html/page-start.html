@@ -17,25 +17,46 @@
 
   <canvas id="car"></canvas>
 </div>
+
+<div class="controller active">
+  <!-- controller yang menghandle pergerakan dengan tombol untuk mobile nantik  -->
+  <div class="left-pad">
+    <button class="btn left" data-key="ArrowLeft">◀</button>
+    <button class="btn right" data-key="ArrowRight">▶</button>
+  </div>
+  <div class="right-pad">
+    <button class="btn up" data-key="ArrowUp">▲</button>
+    <button class="btn down" data-key="ArrowDown">▼</button>
+  </div>
+</div>
+
 <footer>
-  <!-- rumputan hijau di bawah jalan raya -->
   <div class="glasses"></div>
 
-  <!-- menu untuk mengatur tata letak mobil nya di koordinat Y -->
   <div class="foo-cnt">
-    <div class="at">
-      <input type="range" id="y-slider" min="0" max="1000" value="50" />
-      <p>Y-Coordinate Offset</p>
+    <!-- Koordinat -->
+    <div class="y-container">
+      <input type="range" id="y-slider" min="0" max="1000" value="500" />
+      <p>Y-Offset</p>
     </div>
 
     <div class="score">
-      <p class="info"></p>
+      <span class="info"></span>
+      <p>Score</p>
     </div>
 
-    <div>
-      tangkap aja nantik untuk di gunakan di mobilenya saat bergerak
-      <audio id="audioSaya" src="musik.mp3" preload="auto"></audio>
-      <canvas id="canvasSaya" width="400" height="200"></canvas>
+    <div class="ctl">
+      <button type="button" class="ctl-active">Active</button>
+      <p>Controller</p>
     </div>
+
+    <div class="perpektive">
+      <button type="button">Switch</button>
+      <p>View</p>
+    </div>
+
+    <!-- Hidden Assets -->
+    <audio id="audioSaya" src="musik.mp3" preload="auto"></audio>
+    <canvas id="canvasSaya" width="400" height="200" style="display:none;"></canvas>
   </div>
 </footer>
