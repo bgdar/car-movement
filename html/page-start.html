@@ -1,0 +1,63 @@
+<div id="popup">
+  <div class="info">
+    <p>1</p>
+  </div>
+</div>
+
+<!-- kabut putih atau apapun untuk  -->
+<!-- <div class="bg-kabut"></div> -->
+
+<!-- 100% ukuran canvas utama da di tengah -->
+<!-- di sini untuk handle utamanya  -->
+<div class="car-container">
+  <!-- popup canvas  -->
+  <div class="popup popupCrash">
+    <p>boom</p>
+  </div>
+
+  <canvas id="car"></canvas>
+</div>
+
+<div class="controller active">
+  <!-- controller yang menghandle pergerakan dengan tombol untuk mobile nantik  -->
+  <div class="left-pad">
+    <button class="btn left" data-key="ArrowLeft">◀</button>
+    <button class="btn right" data-key="ArrowRight">▶</button>
+  </div>
+  <div class="right-pad">
+    <button class="btn up" data-key="ArrowUp">▲</button>
+    <button class="btn down" data-key="ArrowDown">▼</button>
+  </div>
+</div>
+
+<footer>
+  <div class="glasses"></div>
+
+  <div class="foo-cnt">
+    <!-- Koordinat -->
+    <div class="y-container">
+      <input type="range" id="y-slider" min="0" max="1000" value="500" />
+      <p>Y-Offset</p>
+    </div>
+
+    <div class="score">
+      <span class="info"></span>
+      <p class="coin">coin <span></span></p>
+    </div>
+
+    <div class="ctl">
+      <button type="button" class="ctl-active">Active</button>
+      <p>Controller</p>
+    </div>
+
+    <div class="perpektive">
+      <button type="button">Switch</button>
+      <p>View</p>
+    </div>
+
+    <!-- backsound yang bisa di click untuk di katifkan-->
+    <audio id="bs" autoplay src="/audio/bs-industri.mpeg" loop preload="auto">
+      backsound
+    </audio>
+  </div>
+</footer>
