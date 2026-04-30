@@ -12,6 +12,8 @@ export interface DrawObject {
   draw: () => void;
   update: () => void;
   move: () => void;
+
+  eliminasi?: () => void;
 }
 
 // Tipe untuk Class-nya itu sendiri (Constructor)
@@ -23,5 +25,7 @@ export type DrawObjectClass = new (
   y: number,
   width?: number,
   height?: number,
+  widthCanvas?: number,
   heightCanvas?: number,
+  isXRandom?: boolean,
 ) => DrawObject;

@@ -1,7 +1,6 @@
 // import "../css/component.css";
 // import "../css/page-start.css";
 
-
 // export function carDiv(carName: string): string {
 //   return `
 //  <div id="car">
@@ -27,7 +26,6 @@
 //
 // `;
 // }
-
 
 /**
  * gambar car pada CTX 2D canvas
@@ -154,7 +152,6 @@ export class CarCanvas {
    * mobile hanya bergerak kiri dan kanan
    */
   carMove(keys: Record<string, boolean>) {
-    const maxSteer = 15; // batas belok
     if (keys["ArrowRight"]) {
       this.speed += this.acceleration;
       if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
@@ -164,14 +161,14 @@ export class CarCanvas {
       if (this.speed < -this.maxSpeed) this.speed = -this.maxSpeed / 2;
     }
 
-    if (keys["Shift"]) {
-      if (keys["ArrowRight"]) {
-        targetAngle = maxAngle + shiftBoost;
-      }
-      if (keys["ArrowLeft"]) {
-        targetAngle = -(maxAngle + shiftBoost);
-      }
-    }
+    // if (keys["Shift"]) {
+    //   if (keys["ArrowRight"]) {
+    //     targetAngle = maxAngle + shiftBoost;
+    //   }
+    //   if (keys["ArrowLeft"]) {
+    //     targetAngle = -(maxAngle + shiftBoost);
+    //   }
+    // }
   }
 
   /**
@@ -188,8 +185,15 @@ export class CarCanvas {
     if (Math.abs(this.speed) < this.friction) this.speed = 0;
 
     // Batasi agar tidak keluar canvas (kiri/kanan)
-    if (this.x + this.width > this.canvasWidth) this.x = this.canvasWidth - this.width ; 
-    if (this.x < 0 ) this.x = 0 ;
+    // X
+    if (this.x + this.width > this.canvasWidth)
+      this.x = this.canvasWidth - this.width;
+    if (this.x < 0) this.x = 0;
+
+    // Y
+    if (this.y + this.height > this.canvasHeigth)
+      this.y = this.canvasWidth - this.height;
+    if (this.y < 0) this.y = 0;
   }
 
   lurus() {
@@ -201,4 +205,3 @@ export class CarCanvas {
    */
   delete() {}
 }
-

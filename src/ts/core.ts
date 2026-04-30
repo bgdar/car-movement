@@ -1,12 +1,12 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform
-export enum TopDown {
-  A = 1.0, // Skala X (1.0 agar memenuhi lebar layar)
-  B = 0, // Skew Y
-  C = -0.5, // Skew X (Nilai ini yang membuat efek 'rebah' ke kanan)
-  D = 0.6, // Skala Y (Makin kecil makin terlihat datar/rebah)
-  E = 0, // Move X
-  F = 0, // Move Y
-}
+// export enum TopDown {
+//   A = 1.0, // Skala X (1.0 agar memenuhi lebar layar)
+//   B = 0, // Skew Y
+//   C = -0.5, // Skew X (Nilai ini yang membuat efek 'rebah' ke kanan)
+//   D = 0.6, // Skala Y (Makin kecil makin terlihat datar/rebah)
+//   E = 0, // Move X
+//   F = 0, // Move Y
+// }
 
 // fn untuk mengatur Halaman utma yang tampila
 // Fungsi sekarang mengembalikan Promise<string> karena prosesnya asinkronus

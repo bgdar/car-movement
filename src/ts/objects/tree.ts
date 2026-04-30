@@ -1,7 +1,8 @@
 import type { DrawObject } from "../../types";
+import { getRndInteger } from "../core";
 
 // gambar pohon
-export class DrawTree implements DrawObject{
+export class DrawTree implements DrawObject {
   public x;
   public y;
   public speed;
@@ -13,20 +14,25 @@ export class DrawTree implements DrawObject{
   public height: number;
   public width: number;
 
+  public name: string;
 
-  public name : string;
-
+  private widthCanvas: number;
   private heigthCanvas: number;
+
+  private isXRandom: boolean;
 
   constructor(
     ctx: CanvasRenderingContext2D,
-              name : string,
+    name: string,
     baseX: number,
     baseY: number,
     width: number = 70,
     height: number = 100,
 
+    widthCanvas = 2000,
     heigthCanvas = 2000,
+
+    isXRandom?: boolean,
   ) {
     this.acceleration = 0.2; // Percepatan atau akselerasi adalah perubahan kecepatan dalam satuan waktu tertentu.
     this.friction = 0.06; //Gesekan
@@ -37,9 +43,13 @@ export class DrawTree implements DrawObject{
     this.ctx = ctx;
     this.height = height; //default
     this.width = width;
+
     this.heigthCanvas = heigthCanvas;
+    this.widthCanvas = widthCanvas;
 
     this.name = name;
+
+    this.isXRandom = isXRandom ?? false;
   }
 
   draw(): void {
@@ -123,6 +133,10 @@ export class DrawTree implements DrawObject{
     // Batas Bawah (Jika mobil tidak boleh keluar dari bawah layar)
     if (this.y > this.heigthCanvas + this.height) {
       this.y = 0; // naik ke atas sedikit
+      if (this.isXRandom) {
+        this.x = getRndInteger(0, this.widthCanvas);
+      }
+
       this.speed = 0; // Berhenti jika menabrak batas bawah
     }
   }

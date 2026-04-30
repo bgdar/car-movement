@@ -22,6 +22,7 @@ const pageStartT = "/html/page-start.html";
 import { navigateTo } from "./ts/core";
 import { DrawRoudeAsphalt } from "./components/roude";
 import type { DrawObject, DrawObjectClass } from "./types";
+import { DrawCarFront } from "./ts/objects/car";
 
 const keys: Record<string, boolean> = {};
 
@@ -35,18 +36,19 @@ window.onkeyup = (e: KeyboardEvent): void => {
 // simpan posisi koordinat di mana object di gambar di map
 // let maps = [{ name: "pohon", x: 300, y : 200 }, { name: "" }, {}];
 // var global
-let VPHNow = 0;
-let roadOffset = 0;
+let VPHNow: number = 0;
+let roadOffset: number = 0;
 
 let yKoordinat: number = 0;
+let isMovingThisFrame: boolean = false;
+let coinNow: number = 0;
 
-let isMovingThisFrame = false;
 // ket , x
 
 interface typeDeclarasi {
   name: string;
-  x: number;
-  y: number;
+  defaultX: number;
+  defaultY: number;
   width: number;
   height: number;
   class: DrawObjectClass;
@@ -56,14 +58,36 @@ interface typeDeclarasi {
 let declarasiObject: typeDeclarasi[] = [
   {
     name: "pohon 1",
-    x: 200,
-    y: -10,
+    defaultX: 200,
+    defaultY: -10,
     width: 50,
     height: 50,
     class: DrawTree,
   },
-
-  { name: "coin 1 ", x: 0, y: -10, width: 100, height: 150, class: DrawCoin },
+  {
+    name: "car 1",
+    defaultX: 0,
+    defaultY: -10,
+    width: 140,
+    height: 140,
+    class: DrawCarFront,
+  },
+  {
+    name: "coin",
+    defaultX: 0,
+    defaultY: -10,
+    width: 100,
+    height: 150,
+    class: DrawCoin,
+  },
+  {
+    name: "coin",
+    defaultX: 400,
+    defaultY: -10,
+    width: 100,
+    height: 150,
+    class: DrawCoin,
+  },
 ];
 // simpan object yang suhdah di inisialisais dan sipa di panggil
 let instanceObjects: DrawObject[] = [];
@@ -73,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // halaman dashboard sementara di matiin untuk mode dev
   // muat halaman awal
-  // await navigateTo(pageDashboardT, app);
+  await navigateTo(pageDashboardT, app);
   //
   const btn = app.querySelector("button#start") as HTMLButtonElement;
 
@@ -95,23 +119,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     btnActive?.addEventListener("click", () => {
       controller?.classList.toggle("active");
 
-      controller.querySelectorAll(".btn").forEach((btn) => {
+      const btns = controller.querySelectorAll<HTMLButtonElement>(".btn");
+      btns.forEach((btn) => {
         const key = btn.dataset.key;
 
         // update key untuk langsung menjalnakan
-        const down = () => (keys[key] = true);
-        const up = () => (keys[key] = false);
+        if (key) {
+          const down = () => (keys[key] = true);
+          const up = () => (keys[key] = false);
 
-        btn.addEventListener("mousedown", down);
-        btn.addEventListener("mouseup", up);
-        btn.addEventListener("mouseleave", up);
+          btn.addEventListener("mousedown", down);
+          btn.addEventListener("mouseup", up);
+          btn.addEventListener("mouseleave", up);
 
-        btn.addEventListener("touchstart", (e) => {
-          e.preventDefault();
-          down();
-        });
+          btn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            down();
+          });
 
-        btn.addEventListener("touchend", up);
+          btn.addEventListener("touchend", up);
+        }
       });
     });
     // CONTROLLER END
@@ -129,6 +156,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // PERPESTIVE  END
+
+    // SCORE START
+
+    const score = document.querySelector("div.score") as HTMLDivElement;
+    const scoreCoin = score.querySelector("p.coin") as HTMLParagraphElement;
+    const spanCoin = scoreCoin.querySelector("span") as HTMLSpanElement;
+
+    // SCORE END
 
     // Y KORDINAT START
     const yContainer = document.querySelector(
@@ -182,11 +217,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const newObject = new item.class(
           carContex,
           item.name,
-          item.x,
-          item.y,
+          item.defaultX,
+          item.defaultY,
           item.width,
           item.height,
+          carCanvas.width,
           carCanvas.height,
+          true,
         );
         instanceObjects.push(newObject);
       });
@@ -251,14 +288,24 @@ document.addEventListener("DOMContentLoaded", async () => {
               obj.height,
             )
           ) {
-            console.info("mobile : x dan y : ", car.x, car.y);
-            // console.info("pohon: x dan y : ", pohon1.x, pohon1.y);
+            switch (obj.name) {
+              case "coin":
+                coinNow += 5;
+
+                if (scoreCoin && spanCoin) {
+                  spanCoin.innerHTML = String(coinNow);
+                }
+                if (obj.eliminasi) {
+                  obj.eliminasi();
+                }
+                break;
+            }
             console.info(obj.name, " tertabrak");
           }
-          //
 
           // PROPERTY UPDATE START
-          if (yKoordinat <= carCanvas.height) {
+
+          if (yKoordinat && yKoordinat <= carCanvas.height) {
             car.y = yKoordinat;
           }
           // PROPERTY UPDATE END

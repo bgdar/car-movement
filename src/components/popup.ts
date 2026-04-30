@@ -1,8 +1,7 @@
-
 /**
  * popup informasi di mana terjadi  trabrakan
  */
-export function PopupEffectCrash(x: number, y: number, time: number): string {
+export function PopupEffectCrash(x: number, y: number, time: number): void {
   const popup = document.querySelector("div.popupCrash") as HTMLDialogElement;
 
   popup.style.left = x + "px";
